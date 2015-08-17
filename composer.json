@@ -1,28 +1,29 @@
 {
-    "name": "bitempest/laravel-settings",
-    "authors": [
+  "name": "bitempest/laravel-settings",
+  "authors": [
     {
       "name": "Milica Ionut",
       "email": "ionut.milica@gmail.com"
     }
   ],
-    "autoload": {
-        "psr-4": {
-            "Bitempest\\LaravelSettings\\": "src/"
-        }
-    },
-    "require": {
-        "php": ">=5.4.0",
-        "illuminate/support": "~5.0",
-        "illuminate/session": "~5.0",
-        "illuminate/database": "~5.0"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "4.*"
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Bitempest\\LaravelSettings\\Tests\\": "tests/"
-        }
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+        "Bitempest\\LaravelSettings\\": "src/"
     }
+  },
+  "require": {
+    "php": ">=5.4.0",
+    "illuminate/support": "~5.0",
+    "illuminate/session": "~5.0",
+    "illuminate/database": "~5.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.*"
+  },
+  "autoload-dev": {
+    "psr-4": {
+        "Bitempest\\LaravelSettings\\Tests\\": "tests/"
+    }
+  }
 }
