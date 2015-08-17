@@ -48,7 +48,7 @@ class Json implements SettingsContract
         $this->prepare();
 
         if ($this->has($key)) {
-            return $this->data[$key];
+            return Arr::get($this->data, $key, $default);
         }
 
         if ($save) {
