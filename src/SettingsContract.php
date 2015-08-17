@@ -23,6 +23,13 @@ interface SettingsContract {
     public function set($key, $value);
 
     /**
+     * Forget setting
+     *
+     * @param $key
+     */
+    public function forget($key);
+
+    /**
      * Check if setting key exists
      *
      * @param $key

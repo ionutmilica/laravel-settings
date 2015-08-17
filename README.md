@@ -22,6 +22,10 @@ You can register the Settings facade in the `aliases` key of your `config/app.ph
 
 * `'Settings' => 'Bitempest\LaravelSettings\Facade'`
 
-If you want to have persistent settings, you will need to add a new middleware in `app/Http/Kernel.php`.
+If you want to have persistent settings, you will need to add a new middleware in `app/Http/Kernel.php` to the `middleware` key.
 
 * `'Bitempest\LaravelSettings\SavableMiddleware',`
+
+Laravel settings default driver is set to json. If you want to change it you can execute `artisan vendor:publish` command and then modify `app/config/settings.php` file.
+
+If you chose database driver you should also migrate the database with `php artisan migrate`.

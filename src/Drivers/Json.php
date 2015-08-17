@@ -77,6 +77,20 @@ class Json implements SettingsContract
     }
 
     /**
+     * Forget setting key
+     *
+     * @param $key
+     */
+    public function forget($key)
+    {
+        $this->prepare();
+
+        $this->isDirty = true;
+
+        Arr::forget($this->data, $key);
+    }
+
+    /**
      * Check if setting key exists
      *
      * @param $key

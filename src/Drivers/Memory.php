@@ -36,6 +36,16 @@ class Memory implements SettingsContract
     }
 
     /**
+     * Forget setting
+     *
+     * @param $key
+     */
+    public function forget($key)
+    {
+        Arr::forget($this->data, $key);
+    }
+
+    /**
      * Get all stored settings
      *
      * @return mixed
@@ -65,4 +75,5 @@ class Memory implements SettingsContract
     {
         //
     }
+
 }

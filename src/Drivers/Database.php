@@ -23,14 +23,21 @@ class Database implements SettingsContract
      *
      * @var array
      */
-    protected $create = [];
+    protected $created = [];
 
     /**
      * Settings that should be updated
      *
      * @var array
      */
-    protected $update = [];
+    protected $updated = [];
+
+    /**
+     * Deleted setting that should be removed from the database
+     *
+     * @var array
+     */
+    protected $deleted = [];
 
     /**
      * @var DatabaseManager
@@ -77,14 +84,29 @@ class Database implements SettingsContract
         $this->prepare();
 
         if ( ! $this->has($key)) {
-            $this->create[$key] = $value;
+            $this->created[$key] = $value;
         }
 
         if ( ! $this->has($key) || $this->get($key) != $value) {
-            $this->update[$key] = $value;
+            $this->updated[$key] = $value;
         }
 
         $this->data[$key] = $value;
+    }
+
+    /**
+     * Remove setting from the database
+     *
+     * @param $key
+     */
+    public function forget($key)
+    {
+        $this->prepare();
+
+        if ($this->has($key)) {
+            unset($this->data[$key]);
+            $this->deleted[$key] = null;
+        }
     }
 
     /**
@@ -135,12 +157,16 @@ class Database implements SettingsContract
      */
     public function save()
     {
-        foreach ($this->create as $field => $value) {
+        foreach ($this->created as $field => $value) {
             $this->createSetting($field, $value);
         }
 
-        foreach ($this->update as $field => $value) {
+        foreach ($this->updated as $field => $value) {
             $this->updateSetting($field, $value);
+        }
+
+        foreach ($this->deleted as $field => $value) {
+            $this->deleteSetting($field);
         }
     }
 
@@ -171,4 +197,18 @@ class Database implements SettingsContract
             ->where('id', $field)
             ->update(['value' => $value]);
     }
+
+    /**
+     * Delete setting from the database
+     *
+     * @param $field
+     * @return mixed
+     */
+    public function deleteSetting($field)
+    {
+        return $this->database->table(self::table)
+            ->where('id', $field)
+            ->delete();
+    }
+
 }
