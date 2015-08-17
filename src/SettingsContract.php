@@ -1,6 +1,6 @@
 <?php
 
-namespace Bitempest\LaravelSettings\Contracts;
+namespace Bitempest\LaravelSettings;
 
 interface SettingsContract {
 
@@ -9,9 +9,10 @@ interface SettingsContract {
      *
      * @param $key
      * @param null $default
+     * @param bool $save
      * @return mixed
      */
-    public function get($key, $default = null);
+    public function get($key, $default = null, $save = false);
 
     /**
      * Update setting

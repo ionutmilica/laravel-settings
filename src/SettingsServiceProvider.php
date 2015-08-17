@@ -7,7 +7,7 @@ use Illuminate\Support\ServiceProvider;
 class SettingsServiceProvider extends ServiceProvider
 {
 
-    protected $settingsContract = 'Bitempest\LaravelSettings\Contracts\SettingsContract';
+    protected $settingsContract = 'Bitempest\LaravelSettings\SettingsContract';
 
     /**
      * Register the service provider.
@@ -27,6 +27,8 @@ class SettingsServiceProvider extends ServiceProvider
         $this->app->singleton($this->settingsContract, function ($app) {
             return $app->make('settings.manager')->driver();
         });
+
+        require __DIR__.'/helpers.php';
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace Bitempest\LaravelSettings;
 
-
 use Bitempest\LaravelSettings\Drivers\Database;
 use Bitempest\LaravelSettings\Drivers\Json;
 use Bitempest\LaravelSettings\Drivers\Memory;

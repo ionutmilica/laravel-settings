@@ -21,3 +21,7 @@ Once Laravel Settings is installed, you need to register the service provider. O
 You can register the Settings facade in the `aliases` key of your `config/app.php` file if you like.
 
 * `'Settings' => 'Bitempest\LaravelSettings\Facade'`
+
+If you want to have persistent settings, you will need to add a new middleware in `app/Http/Kernel.php`.
+
+* `'Bitempest\LaravelSettings\SavableMiddleware',`

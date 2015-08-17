@@ -2,7 +2,7 @@
 
 namespace Bitempest\LaravelSettings\Drivers;
 
-use Bitempest\LaravelSettings\Contracts\SettingsContract;
+use Bitempest\LaravelSettings\SettingsContract;
 use Illuminate\Support\Arr;
 
 class Memory implements SettingsContract
@@ -15,9 +15,10 @@ class Memory implements SettingsContract
      *
      * @param $key
      * @param null $default
+     * @param bool $save
      * @return mixed
      */
-    public function get($key, $default = null)
+    public function get($key, $default = null, $save = false)
     {
         return Arr::get($this->data, $key, $default);
     }

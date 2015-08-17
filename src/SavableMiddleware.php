@@ -2,8 +2,6 @@
 
 namespace Bitempest\LaravelSettings;
 
-
-use Bitempest\LaravelSettings\Contracts\SettingsContract;
 use Closure;
 use Illuminate\Contracts\Routing\TerminableMiddleware;
 use Illuminate\Support\Facades\Log;

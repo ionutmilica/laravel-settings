@@ -2,8 +2,7 @@
 
 namespace Bitempest\LaravelSettings\Drivers;
 
-
-use Bitempest\LaravelSettings\Contracts\SettingsContract;
+use Bitempest\LaravelSettings\SettingsContract;
 use Illuminate\Support\Arr;
 
 class Json implements SettingsContract
@@ -41,14 +40,19 @@ class Json implements SettingsContract
      *
      * @param $key
      * @param null $default
+     * @param bool $save
      * @return mixed
      */
-    public function get($key, $default = null)
+    public function get($key, $default = null, $save = false)
     {
         $this->prepare();
 
         if ($this->has($key)) {
             return $this->data[$key];
+        }
+
+        if ($save) {
+            $this->set($key, $default);
         }
 
         return $default;
