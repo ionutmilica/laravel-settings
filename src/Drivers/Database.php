@@ -87,7 +87,7 @@ class Database implements SettingsContract
             $this->created[$key] = $value;
         }
 
-        if ( ! $this->has($key) || $this->get($key) != $value) {
+        if ($this->has($key) && $this->get($key) != $value) {
             $this->updated[$key] = $value;
         }
 
