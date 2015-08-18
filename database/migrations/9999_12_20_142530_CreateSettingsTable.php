@@ -15,7 +15,7 @@ class CreateSettingsTable extends Migration {
     {
         Schema::create('laravel_settings', function (Blueprint $table) {
             $table->string('id', 191);
-            $table->text('value');
+            $table->text('value')->nullable();
         });
     }
 
