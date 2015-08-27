@@ -5,6 +5,7 @@ namespace Bitempest\LaravelSettings\Drivers;
 
 use Bitempest\LaravelSettings\SettingsContract;
 use Illuminate\Database\DatabaseManager;
+use Illuminate\Support\Arr;
 
 class Database implements SettingsContract
 {
@@ -63,7 +64,7 @@ class Database implements SettingsContract
     public function get($key, $default = null, $save = false)
     {
         if ($this->has($key)) {
-            return $this->data[$key];
+            return Arr::get($this->data, $key);
         }
 
         if ($save) {
@@ -91,7 +92,7 @@ class Database implements SettingsContract
             $this->updated[$key] = $value;
         }
 
-        $this->data[$key] = $value;
+        Arr::set($this->data, $key, $value);
     }
 
     /**
@@ -104,7 +105,7 @@ class Database implements SettingsContract
         $this->prepare();
 
         if ($this->has($key)) {
-            unset($this->data[$key]);
+            Arr::forget($this->data, $key);
             $this->deleted[$key] = null;
         }
     }
@@ -119,7 +120,7 @@ class Database implements SettingsContract
     {
         $this->prepare();
 
-        return isset($this->data[$key]);
+        return Arr::has($this->data, $key);
     }
 
     /**
@@ -148,7 +149,14 @@ class Database implements SettingsContract
         $settings = $this->database->select('SELECT * FROM '.self::table);
 
         foreach ($settings as $setting) {
-            $this->data[$setting->id] = $setting->value;
+            $value = $setting->value;
+            $result = json_decode($value, 1);
+
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $value = $result;
+            }
+
+            Arr::set($this->data, $setting->id, $value);
         }
     }
 
@@ -178,6 +186,8 @@ class Database implements SettingsContract
      */
     protected function createSetting($field, $value)
     {
+        $value = is_array($value) ? json_encode($value) : $value;
+
         return $this->database->table(self::table)->insert([
             'id' => $field,
             'value' => $value
@@ -193,6 +203,8 @@ class Database implements SettingsContract
      */
     protected function updateSetting($field, $value)
     {
+        $value = is_array($value) ? json_encode($value) : $value;
+
         return $this->database->table(self::table)
             ->where('id', $field)
             ->update(['value' => $value]);
