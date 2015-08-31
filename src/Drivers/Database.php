@@ -6,6 +6,7 @@ namespace Bitempest\LaravelSettings\Drivers;
 use Bitempest\LaravelSettings\SettingsContract;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class Database implements SettingsContract
 {
@@ -150,10 +151,9 @@ class Database implements SettingsContract
 
         foreach ($settings as $setting) {
             $value = $setting->value;
-            $result = json_decode($value, 1);
 
-            if (json_last_error() === JSON_ERROR_NONE) {
-                $value = $result;
+            if (Str::startsWith($value, '[') || Str::startsWith($value, '{' )) {
+                $value = json_decode($value, 1, 512, JSON_BIGINT_AS_STRING);
             }
 
             Arr::set($this->data, $setting->id, $value);
