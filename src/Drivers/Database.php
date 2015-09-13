@@ -153,11 +153,7 @@ class Database implements SettingsContract
             $value = $setting->value;
 
             if (Str::startsWith($value, '[') || Str::startsWith($value, '{' )) {
-                if (defined('JSON_BIGINT_AS_STRING')) {
-                    $value = json_decode($value, 1, 512, JSON_BIGINT_AS_STRING);
-                } else {
-                    $value = json_decode($value, 1, 512);
-                }
+                $value = json_decode($value, 1, 512);
             }
 
             Arr::set($this->data, $setting->id, $value);
