@@ -1,8 +1,8 @@
 <?php
 
-namespace Bitempest\LaravelSettings\Drivers;
+namespace IonutMilica\LaravelSettings\Drivers;
 
-use Bitempest\LaravelSettings\SettingsContract;
+use IonutMilica\LaravelSettings\SettingsContract;
 use Illuminate\Support\Arr;
 
 class Memory implements SettingsContract
