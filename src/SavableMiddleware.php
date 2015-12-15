@@ -1,6 +1,6 @@
 <?php
 
-namespace Bitempest\LaravelSettings;
+namespace IonutMilica\LaravelSettings;
 
 use Closure;
 use Illuminate\Contracts\Routing\TerminableMiddleware;

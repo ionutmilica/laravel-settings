@@ -1,5 +1,5 @@
 {
-  "name": "bitempest/laravel-settings",
+  "name": "ionutmilica/laravel-settings",
   "authors": [
     {
       "name": "Milica Ionut",
@@ -9,7 +9,7 @@
   "license": "MIT",
   "autoload": {
     "psr-4": {
-        "Bitempest\\LaravelSettings\\": "src/"
+        "IonutMilica\\LaravelSettings\\": "src/"
     }
   },
   "require": {
@@ -23,7 +23,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-        "Bitempest\\LaravelSettings\\Tests\\": "tests/"
+        "IonutMilica\\LaravelSettings\\Tests\\": "tests/"
     }
   }
 }

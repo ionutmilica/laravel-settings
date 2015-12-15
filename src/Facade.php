@@ -1,6 +1,6 @@
 <?php
 
-namespace Bitempest\LaravelSettings;
+namespace IonutMilica\LaravelSettings;
 
 use Illuminate\Support\Facades\Facade as BaseFacade;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Bitempest\LaravelSettings;
+namespace IonutMilica\LaravelSettings;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -22,7 +22,7 @@ class SettingsServiceProvider extends ServiceProvider
             return new SettingsManager($app);
         });
 
-        $this->app->singleton('Bitempest\LaravelSettings\SettingsContract', function ($app) {
+        $this->app->singleton('IonutMilica\LaravelSettings\SettingsContract', function ($app) {
             return $app->make('settings.manager')->driver();
         });
 

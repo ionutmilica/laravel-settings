@@ -1,10 +1,10 @@
 <?php
 
-namespace Bitempest\LaravelSettings;
+namespace IonutMilica\LaravelSettings;
 
-use Bitempest\LaravelSettings\Drivers\Database;
-use Bitempest\LaravelSettings\Drivers\Json;
-use Bitempest\LaravelSettings\Drivers\Memory;
+use IonutMilica\LaravelSettings\Drivers\Database;
+use IonutMilica\LaravelSettings\Drivers\Json;
+use IonutMilica\LaravelSettings\Drivers\Memory;
 use Illuminate\Support\Manager;
 
 class SettingsManager extends Manager

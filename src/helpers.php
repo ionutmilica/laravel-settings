@@ -11,7 +11,7 @@ if ( ! function_exists('setting')) {
      */
     function setting($name = null, $default = null)
     {
-        $setting = app('Bitempest\LaravelSettings\SettingsContract');
+        $setting = app('IonutMilica\LaravelSettings\SettingsContract');
 
         if ( ! $name) {
             return $setting->all();
@@ -32,7 +32,7 @@ if ( ! function_exists('setting_set')) {
      */
     function setting_set($name, $value)
     {
-        return app('Bitempest\LaravelSettings\SettingsContract')
+        return app('IonutMilica\LaravelSettings\SettingsContract')
                 ->set($name, $value);
     }
 }
@@ -47,7 +47,7 @@ if ( ! function_exists('setting_forget')) {
      */
     function setting_forget($name)
     {
-        return app('Bitempest\LaravelSettings\SettingsContract')
+        return app('IonutMilica\LaravelSettings\SettingsContract')
             ->forget($name);
     }
 }

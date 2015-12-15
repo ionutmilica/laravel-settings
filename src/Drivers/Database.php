@@ -1,9 +1,9 @@
 <?php
 
-namespace Bitempest\LaravelSettings\Drivers;
+namespace IonutMilica\LaravelSettings\Drivers;
 
 
-use Bitempest\LaravelSettings\SettingsContract;
+use IonutMilica\LaravelSettings\SettingsContract;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
