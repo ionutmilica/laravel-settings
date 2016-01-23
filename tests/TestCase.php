@@ -5,6 +5,11 @@ use Illuminate\Database\Capsule\Manager as DB;
 
 abstract class TestCase extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var DB
+     */
+    protected $db;
+
     public function setUp()
     {
         parent::setUp();
@@ -20,6 +25,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         ]);
         $db->bootEloquent();
         $db->setAsGlobal();
+        $this->db = $db;
     }
 
 }

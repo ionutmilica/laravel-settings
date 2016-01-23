@@ -27,6 +27,8 @@ class SettingsServiceProvider extends ServiceProvider
           'IonutMilica\LaravelSettings\SettingsImpl'
         );
 
+        $this->app->alias('IonutMilica\LaravelSettings\SettingsContract', 'settings');
+
         require __DIR__.'/helpers.php';
     }
 

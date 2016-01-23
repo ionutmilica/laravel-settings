@@ -8,7 +8,6 @@ use Illuminate\Support\Manager;
 
 class DriversManager extends Manager
 {
-
     /**
      * Get the default driver name.
      *
@@ -36,7 +35,7 @@ class DriversManager extends Manager
      */
     public function createDatabaseDriver()
     {
-        return new Database($this->app['config'], $this->app['db']);
+        return new Database($this->app['db']);
     }
 
     /**
