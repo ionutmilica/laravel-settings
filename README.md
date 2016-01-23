@@ -34,7 +34,7 @@ If you chose database driver you should also migrate the database with `php arti
 
 For simple usage we provide a helper that provides all the features you need:
 
-1.Fetching a value
+* Fetching a value
 ```php
 $canRegister = settings('restrictions.register');
 
@@ -51,21 +51,21 @@ $canRegister = settings('restrictions.register', false);
 $canRegister = settings('restrictions.register, false, true);
 
 ```
-2. Storing a new setting or editing an old one?
+- Storing a new setting or editing an old one?
 ```php
 settings()->set('my-setting', 'some-value');
 ```
-3. Checking for a setting existence
+- Checking for a setting existence
 ```php
 if (settings()->has('my-setting')) {
     // do something
 }
 ```
-4. Wanting to delete a not needed setting?
+- Wanting to delete a not needed setting?
 ```php
 settings()->forgot('my-setting');
 ```
-5. Force the saving of the settings into the datastore
+- Force the saving of the settings into the datastore
 ```php
 settings()->set('the-answer', 42);
 settings()->save();
@@ -75,7 +75,7 @@ You can also inject the settings instance into your laravel controller:
 
 ```php
 
-use IonutMilica/LaravelSettings/SettingsContract;
+use IonutMilica\LaravelSettings\SettingsContract;
 
 class RegistrationController extends Controller {
 
@@ -84,6 +84,8 @@ class RegistrationController extends Controller {
         if ($settings->get('restrictions.registration')) {
         	return redirect()->back();
         }
+        
+        // Do something
     }
 }
 ```
