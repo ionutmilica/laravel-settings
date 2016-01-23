@@ -1,5 +1,4 @@
 <?php
-
 namespace IonutMilica\LaravelSettings;
 
 use IonutMilica\LaravelSettings\Drivers\Database;
@@ -7,7 +6,7 @@ use IonutMilica\LaravelSettings\Drivers\Json;
 use IonutMilica\LaravelSettings\Drivers\Memory;
 use Illuminate\Support\Manager;
 
-class SettingsManager extends Manager
+class DriversManager extends Manager
 {
 
     /**
@@ -27,7 +26,7 @@ class SettingsManager extends Manager
      */
     public function createMemoryDriver()
     {
-        return new Memory();
+        return new Memory($this->app['config']);
     }
 
     /**
@@ -37,7 +36,7 @@ class SettingsManager extends Manager
      */
     public function createDatabaseDriver()
     {
-        return new Database($this->app['db']);
+        return new Database($this->app['config'], $this->app['db']);
     }
 
     /**
@@ -47,7 +46,7 @@ class SettingsManager extends Manager
      */
     public function createJsonDriver()
     {
-        return new Json($this->app['path.storage']);
+        return new Json($this->config('settings.json_file'));
     }
 
     /**

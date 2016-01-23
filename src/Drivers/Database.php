@@ -1,180 +1,80 @@
 <?php
-
 namespace IonutMilica\LaravelSettings\Drivers;
 
-
-use IonutMilica\LaravelSettings\SettingsContract;
-use Illuminate\Database\DatabaseManager;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
+use Illuminate\Database\DatabaseManager;
+use IonutMilica\LaravelSettings\DriverContract;
 
-class Database implements SettingsContract
+class Database implements DriverContract
 {
-
-    const table = 'laravel_settings';
-
     /**
-     * Settings data from database
+     * Sql table used to store the settings
      *
-     * @var array
+     * @var string
      */
-    protected $data = null;
-
-    /**
-     * Settings that should be created
-     *
-     * @var array
-     */
-    protected $created = [];
-
-    /**
-     * Settings that should be updated
-     *
-     * @var array
-     */
-    protected $updated = [];
-
-    /**
-     * Deleted setting that should be removed from the database
-     *
-     * @var array
-     */
-    protected $deleted = [];
+    protected $table = 'laravel_settings';
 
     /**
      * @var DatabaseManager
      */
-    private $database;
+    protected $database;
 
     /**
+     * Database constructor.
      * @param DatabaseManager $database
+     * @param $table
      */
-    public function __construct(DatabaseManager $database)
+    public function __construct(DatabaseManager $database, $table = null)
     {
         $this->database = $database;
+        $this->table = $table ?: $this->table;
     }
 
     /**
-     * Get setting by key
+     * Fetch the settings from the database
      *
-     * @param $key
-     * @param null $default
-     * @param bool $save
-     * @return mixed
+     * @return array
      */
-    public function get($key, $default = null, $save = false)
+    public function load()
     {
-        if ($this->has($key)) {
-            return Arr::get($this->data, $key);
-        }
+        $data = [];
 
-        if ($save) {
-            $this->set($key, $default);
-        }
-
-        return $default;
-    }
-
-    /**
-     * Update setting
-     *
-     * @param $key
-     * @param $value
-     */
-    public function set($key, $value)
-    {
-        $this->prepare();
-
-        if ( ! $this->has($key)) {
-            $this->created[$key] = $value;
-        }
-
-        if ($this->has($key) && $this->get($key) != $value) {
-            $this->updated[$key] = $value;
-        }
-
-        Arr::set($this->data, $key, $value);
-    }
-
-    /**
-     * Remove setting from the database
-     *
-     * @param $key
-     */
-    public function forget($key)
-    {
-        $this->prepare();
-
-        if ($this->has($key)) {
-            Arr::forget($this->data, $key);
-            $this->deleted[$key] = null;
-        }
-    }
-
-    /**
-     * Check if setting key exists
-     *
-     * @param $key
-     * @return mixed
-     */
-    public function has($key)
-    {
-        $this->prepare();
-
-        return Arr::has($this->data, $key);
-    }
-
-    /**
-     * Get all stored settings
-     *
-     * @return mixed
-     */
-    public function all()
-    {
-        $this->prepare();
-
-        return $this->data;
-    }
-
-    /**
-     * Fetch the data if its not already fetched from the database
-     */
-    protected function prepare()
-    {
-        if ( ! is_null($this->data)) {
-            return;
-        }
-
-        $this->data = [];
-
-        $settings = $this->database->select('SELECT * FROM '.self::table);
+        $settings = $this->database->select('SELECT * FROM '.$this->table);
 
         foreach ($settings as $setting) {
             $value = $setting->value;
 
-            if (Str::startsWith($value, '[') || Str::startsWith($value, '{' )) {
+            if ($value[0] == '[' || $value[0] == '{') {
                 $value = json_decode($value, 1, 512);
             }
 
-            Arr::set($this->data, $setting->id, $value);
+            Arr::set($data, $setting->id, $value);
         }
+
+        return $data;
     }
 
     /**
      * Save the data into the database
+     * @param array $data
+     * @param array $dirt
+     *
+     * @return bool
      */
-    public function save()
+    public function save(array $data = [], array $dirt = [])
     {
-        foreach ($this->created as $field => $value) {
-            $this->createSetting($field, $value);
-        }
-
-        foreach ($this->updated as $field => $value) {
-            $this->updateSetting($field, $value);
-        }
-
-        foreach ($this->deleted as $field => $value) {
-            $this->deleteSetting($field);
+        foreach ($dirt as $field => $data) {
+            switch ($data['type']) {
+                case 'created':
+                    $this->createSetting($field, $data['value']);
+                    break;
+                case 'updated':
+                    $this->updateSetting($field, $data['value']);
+                    break;
+                case 'deleted':
+                    $this->deleteSetting($field);
+                    break;
+            }
         }
     }
 
@@ -188,7 +88,7 @@ class Database implements SettingsContract
     {
         $value = is_array($value) ? json_encode($value) : $value;
 
-        return $this->database->table(self::table)->insert([
+        return $this->getTableObject()->insert([
             'id' => $field,
             'value' => $value
         ]);
@@ -205,7 +105,7 @@ class Database implements SettingsContract
     {
         $value = is_array($value) ? json_encode($value) : $value;
 
-        return $this->database->table(self::table)
+        return $this->getTableObject()
             ->where('id', $field)
             ->update(['value' => $value]);
     }
@@ -218,9 +118,19 @@ class Database implements SettingsContract
      */
     public function deleteSetting($field)
     {
-        return $this->database->table(self::table)
+        return $this->getTableObject()
             ->where('id', $field)
             ->delete();
+    }
+
+    /**
+     * Get the object for the current table
+     *
+     * @return mixed
+     */
+    private function getTableObject()
+    {
+        return $this->database->table($this->table);
     }
 
 }

@@ -18,13 +18,14 @@ class SettingsServiceProvider extends ServiceProvider
             __DIR__.'/../config/config.php', 'settings'
         );
 
-        $this->app->singleton('settings.manager', function ($app) {
-            return new SettingsManager($app);
+        $this->app->singleton('IonutMilica\LaravelSettings\DriverContract', function ($app) {
+            return (new DriversManager($app))->driver();
         });
 
-        $this->app->singleton('IonutMilica\LaravelSettings\SettingsContract', function ($app) {
-            return $app->make('settings.manager')->driver();
-        });
+        $this->app->singleton(
+          'IonutMilica\LaravelSettings\SettingsContract',
+          'IonutMilica\LaravelSettings\SettingsImpl'
+        );
 
         require __DIR__.'/helpers.php';
     }

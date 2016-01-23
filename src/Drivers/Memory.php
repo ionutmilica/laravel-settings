@@ -1,77 +1,26 @@
 <?php
-
 namespace IonutMilica\LaravelSettings\Drivers;
 
-use IonutMilica\LaravelSettings\SettingsContract;
-use Illuminate\Support\Arr;
+use IonutMilica\LaravelSettings\DriverContract;
 
-class Memory implements SettingsContract
+class Memory implements DriverContract
 {
-
-    protected $data = [];
-
     /**
-     * Get setting by key
-     *
-     * @param $key
-     * @param null $default
-     * @param bool $save
-     * @return mixed
+     * Load the data in memory
      */
-    public function get($key, $default = null, $save = false)
+    public function load()
     {
-        return Arr::get($this->data, $key, $default);
-    }
-
-    /**
-     * Update setting
-     *
-     * @param $key
-     * @param $value
-     * @return mixed
-     */
-    public function set($key, $value)
-    {
-        return Arr::set($this->data, $key, $value);
-    }
-
-    /**
-     * Forget setting
-     *
-     * @param $key
-     */
-    public function forget($key)
-    {
-        Arr::forget($this->data, $key);
-    }
-
-    /**
-     * Get all stored settings
-     *
-     * @return mixed
-     */
-    public function all()
-    {
-        return $this->data;
-    }
-
-    /**
-     * Check if setting key exists
-     *
-     * @param $key
-     * @return mixed
-     */
-    public function has($key)
-    {
-        return Arr::has($this->data, $key);
+        return [];
     }
 
     /**
      * Save dirty data into the data source
      *
+     * @param array $settings
+     * @param array $dirt
      * @return mixed
      */
-    public function save()
+    public function save(array $settings = [], array $dirt = [])
     {
         //
     }

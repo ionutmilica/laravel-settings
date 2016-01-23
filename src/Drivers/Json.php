@@ -1,144 +1,54 @@
 <?php
-
 namespace IonutMilica\LaravelSettings\Drivers;
 
-use IonutMilica\LaravelSettings\SettingsContract;
-use Illuminate\Support\Arr;
+use IonutMilica\LaravelSettings\DriverContract;
 
-class Json implements SettingsContract
+class Json implements DriverContract
 {
-
-    /**
-     * Settings stored locally after they are fetched
-     *
-     * @var array
-     */
-    protected $data = null;
-
     /**
      * @var
      */
-    private $path;
+    protected $filePath;
 
     /**
-     *
-     *
-     * @var bool
+     * Json constructor.
+     * @param $filePath
      */
-    protected $isDirty = false;
-
-    /**
-     * @param $path
-     */
-    public function __construct($path)
+    public function __construct($filePath)
     {
-        $this->path = $path.'/app/settings.json';
-    }
-
-    /**
-     * Get setting by key
-     *
-     * @param $key
-     * @param null $default
-     * @param bool $save
-     * @return mixed
-     */
-    public function get($key, $default = null, $save = false)
-    {
-        $this->prepare();
-
-        if ($this->has($key)) {
-            return Arr::get($this->data, $key, $default);
-        }
-
-        if ($save) {
-            $this->set($key, $default);
-        }
-
-        return $default;
-    }
-
-    /**
-     * Update setting
-     *
-     * @param $key
-     * @param $value
-     * @return mixed
-     */
-    public function set($key, $value)
-    {
-        $this->prepare();
-
-        if ( ! $this->has($key) || $this->get($key) != $value) {
-            $this->isDirty = true;
-        }
-
-        Arr::set($this->data, $key, $value);
-    }
-
-    /**
-     * Forget setting key
-     *
-     * @param $key
-     */
-    public function forget($key)
-    {
-        $this->prepare();
-
-        $this->isDirty = true;
-
-        Arr::forget($this->data, $key);
-    }
-
-    /**
-     * Check if setting key exists
-     *
-     * @param $key
-     * @return mixed
-     */
-    public function has($key)
-    {
-        return Arr::has($this->data, $key);
-    }
-
-    /**
-     * Get all stored settings
-     *
-     * @return array
-     */
-    public function all()
-    {
-        $this->prepare();
-
-        return $this->data;
+        $this->filePath = $filePath;
     }
 
     /**
      * Save dirty data into the data source
      *
-     * @return mixed
+     * @param array $data
+     * @param array $dirt
+     *
+     * @return bool
      */
-    public function save()
+    public function save(array $data = [], array $dirt = [])
     {
-        if ($this->isDirty) {
-            file_put_contents($this->path, json_encode($this->data));
+        if ($dirt != null) {
+            file_put_contents($this->filePath, json_encode($data));
+            return true;
         }
+
+        return false;
     }
 
     /**
      * Prepare the data for driver operations
      */
-    protected function prepare()
+    public function load()
     {
-        if ($this->data !== null) {
-            return;
+        $data = [];
+
+        if (is_file($this->filePath)) {
+            $data = json_decode(file_get_contents($this->filePath), true);
         }
 
-        $this->data = [];
-
-        if (is_file($this->path)) {
-            $this->data = json_decode(file_get_contents($this->path), true);
-        }
+        return $data;
     }
 
 }

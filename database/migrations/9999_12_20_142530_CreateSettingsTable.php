@@ -13,7 +13,7 @@ class CreateSettingsTable extends Migration {
      */
     public function up()
     {
-        Schema::create('laravel_settings', function (Blueprint $table) {
+        Schema::create($this->getTableName(), function (Blueprint $table) {
             $table->string('id', 191);
             $table->text('value')->nullable();
         });
@@ -26,7 +26,17 @@ class CreateSettingsTable extends Migration {
      */
     public function down()
     {
-        Schema::drop('laravel_settings');
+        Schema::drop($this->getTableName());
+    }
+
+    /**
+     * Get table name for settings
+     *
+     * @return mixed
+     */
+    private function getTableName()
+    {
+        return config('settings.table');
     }
 
 }

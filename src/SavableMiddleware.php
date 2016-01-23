@@ -1,17 +1,15 @@
 <?php
-
 namespace IonutMilica\LaravelSettings;
 
 use Closure;
 use Illuminate\Contracts\Routing\TerminableMiddleware;
-use Illuminate\Support\Facades\Log;
 
 class SavableMiddleware implements TerminableMiddleware
 {
     /**
      * @var SettingsContract
      */
-    private $settings;
+    protected $settings;
 
     /**
      * @param SettingsContract $settings

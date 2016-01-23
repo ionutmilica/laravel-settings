@@ -1,8 +1,7 @@
 <?php
-
 namespace IonutMilica\LaravelSettings;
 
-interface SettingsContract {
+interface SettingsContract extends \ArrayAccess{
 
     /**
      * Get setting by key
@@ -19,6 +18,7 @@ interface SettingsContract {
      *
      * @param $key
      * @param $value
+     * @return mixed
      */
     public function set($key, $value);
 
@@ -47,7 +47,7 @@ interface SettingsContract {
     /**
      * Save dirty data into the data source
      *
-     * @return mixed
+     * @return bool
      */
     public function save();
 

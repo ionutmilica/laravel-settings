@@ -1,5 +1,40 @@
 <?php
 
+if (! function_exists('value')) {
+    /**
+     * Return the default value of the given value.
+     *
+     * @param  mixed  $value
+     * @return mixed
+     */
+    function value($value)
+    {
+        return $value instanceof Closure ? $value() : $value;
+    }
+}
+
+if ( ! function_exists('settings')) {
+
+    /**
+     * Get setting from the storage
+     *
+     * @param $name
+     * @param $default
+     * @param bool $save
+     * @return \Illuminate\Foundation\Application|mixed
+     */
+    function settings($name = null, $default = null, $save = false)
+    {
+        $settings = app('IonutMilica\LaravelSettings\SettingsContract');
+
+        if ( ! $name) {
+            return $settings->all();
+        }
+
+        return $settings->get($name, $default, $save);
+    }
+}
+
 if ( ! function_exists('setting')) {
 
     /**
@@ -7,9 +42,10 @@ if ( ! function_exists('setting')) {
      *
      * @param $name
      * @param $default
+     * @param bool $save
      * @return \Illuminate\Foundation\Application|mixed
      */
-    function setting($name = null, $default = null)
+    function setting($name = null, $default = null, $save = false)
     {
         $setting = app('IonutMilica\LaravelSettings\SettingsContract');
 
@@ -17,7 +53,7 @@ if ( ! function_exists('setting')) {
             return $setting->all();
         }
 
-        return $setting->get($name, $default);
+        return $setting->get($name, $default, $save);
     }
 }
 
