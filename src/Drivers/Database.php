@@ -42,13 +42,14 @@ class Database implements DriverContract
         $settings = $this->database->select('SELECT * FROM '.$this->table);
 
         foreach ($settings as $setting) {
+            $id = $setting->id;
             $value = $setting->value;
 
-            if ($value[0] == '[' || $value[0] == '{') {
+            if (strlen($value) && ($value[0] == '[' || $value[0] == '{')) {
                 $value = json_decode($value, 1, 512);
             }
 
-            Arr::set($data, $setting->id, $value);
+            Arr::set($data, $id, $value);
         }
 
         return $data;
