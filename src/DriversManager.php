@@ -35,7 +35,7 @@ class DriversManager extends Manager
      */
     public function createDatabaseDriver()
     {
-        return new Database($this->app['db']);
+        return new Database($this->app['db'], $this->config('settings.table'));
     }
 
     /**
