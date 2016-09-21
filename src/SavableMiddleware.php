@@ -2,9 +2,8 @@
 namespace IonutMilica\LaravelSettings;
 
 use Closure;
-use Illuminate\Contracts\Routing\TerminableMiddleware;
 
-class SavableMiddleware implements TerminableMiddleware
+class SavableMiddleware
 {
     /**
      * @var SettingsContract
