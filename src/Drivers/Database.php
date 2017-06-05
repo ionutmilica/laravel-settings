@@ -45,8 +45,9 @@ class Database implements DriverContract
             $id = $setting->id;
             $value = $setting->value;
 
-            if (strlen($value) && ($value[0] == '[' || $value[0] == '{')) {
-                $value = json_decode($value, 1, 512);
+            $decoded = json_decode($value, 1, 512);
+            if (is_array($decoded)) {
+                $value = $decoded;
             }
 
             Arr::set($data, $id, $value);
